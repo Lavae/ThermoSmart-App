@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "301480838913",
+    "project_id": "sc-energy-app",
+    "storage_bucket": "sc-energy-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301480838913:android:252ad9f091c27675573d00",
+        "android_client_info": {
+          "package_name": "com.example.sc_energy_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301480838913-fe3r1lmf0ta3pprlhpevvjcrrguk1dfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFPYkBrAuuIwd3j3YlfB22lwef2QeinQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301480838913-fe3r1lmf0ta3pprlhpevvjcrrguk1dfr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
