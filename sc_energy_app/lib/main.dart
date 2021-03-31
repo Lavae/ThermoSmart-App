@@ -91,6 +91,24 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
     setState(() {
       _selectedIndex = index;
     });
+    if (index == 1){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyHomePage()),
+      );
+    }
+    else if (index == 2){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FirstRoute()),
+      );
+    }
+    else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SecondRoute()),
+      );
+    }
   }
 
   @override
