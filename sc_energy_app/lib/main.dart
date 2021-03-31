@@ -4,9 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:custom_switch/custom_switch.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-
-
-void main(){
+void main() {
   runApp(MyApp());
 }
 
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
 
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar({Key key}) : super(key: key);
-  
+
   @override
   _MyNavigationBarState createState() => _MyNavigationBarState();
 }
@@ -32,7 +30,9 @@ class MyNavigationBar extends StatefulWidget {
 class _MyNavigationBarState extends State<MyNavigationBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)), //HomePage()
+    Text('Home',
+        style:
+            TextStyle(fontSize: 35, fontWeight: FontWeight.bold)), //HomePage()
     DataPage(),
     ButtonPage(),
   ];
@@ -84,7 +84,6 @@ class ButtonPage extends StatefulWidget {
 }
 
 class _ButtonPageState extends State<ButtonPage> {
-
   bool status = false;
   String open = "";
   @override
@@ -104,20 +103,21 @@ class _ButtonPageState extends State<ButtonPage> {
                 print("Vent Status: $value");
                 setState(() {
                   status = value;
-                  if (status){
+                  if (status) {
                     open = "Open";
-                  }
-                  else {
+                  } else {
                     open = "Closed";
                   }
                 });
               },
             ),
-            SizedBox(height: 12.0,),
-            Text('Vent $open', style: TextStyle(
-              color: Colors.black,
-              fontSize: 20.0
-            ),)
+            SizedBox(
+              height: 12.0,
+            ),
+            Text(
+              'Vent $open',
+              style: TextStyle(color: Colors.black, fontSize: 20.0),
+            )
           ],
         ),
       ),
@@ -161,8 +161,8 @@ class Record {
   int Hr23;
   int Hr24;
   DocumentReference reference;
-  double avg;
-  int curr;
+  double avg1;
+  double avg2;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['day'] != null),
@@ -219,42 +219,18 @@ class Record {
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
-  double calcAvg() {
-    avg = (Hr1 +
-            Hr2 +
-            Hr3 +
-            Hr4 +
-            Hr5 +
-            Hr6 +
-            Hr7 +
-            Hr8 +
-            Hr9 +
-            Hr10 +
-            Hr11 +
-            Hr12 +
-            Hr13 +
-            Hr14 +
-            Hr15 +
-            Hr16 +
-            Hr17 +
-            Hr18 +
-            Hr19 +
-            Hr20 +
-            Hr21 +
-            Hr22 +
-            Hr23 +
-            Hr24) /
-        24;
-    return avg;
+  double calcAvgLow() {
+    avg1 = (Hr1 + Hr2 + Hr3 + Hr4) / 4;
+    return avg1;
   }
 
-  int getCurr() {
-    curr = Hr10;
-    return curr;
+  double calcAvgHi() {
+    avg2 = (Hr12 + Hr13 + Hr14 + Hr15) / 4;
+    return avg2;
   }
 
   @override
-  String toString() => "Record<$day:$avg:$curr>";
+  String toString() => "Record<$day:$avg1:$avg2>";
 }
 
 class _DataPageState extends State<DataPage> {
@@ -298,14 +274,14 @@ class _DataPageState extends State<DataPage> {
         child: DataTable(
           columns: [
             DataColumn(label: Text('Day')),
-            DataColumn(label: Text('Average')),
-            DataColumn(label: Text('Current')),
+            DataColumn(label: Text('Avg Low')),
+            DataColumn(label: Text('Avg High')),
           ],
           rows: [
             DataRow(cells: [
               DataCell(Text(record.day)),
-              DataCell(Text(record.calcAvg().toStringAsFixed(1))),
-              DataCell(Text(record.getCurr().toString())),
+              DataCell(Text(record.calcAvgLow().toStringAsFixed(1))),
+              DataCell(Text(record.calcAvgHi().toStringAsFixed(1))),
             ])
           ],
         ),
@@ -313,6 +289,7 @@ class _DataPageState extends State<DataPage> {
     );
   }
 }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -393,3 +370,5 @@ class Button extends StatelessWidget {
 
 */
 >>>>>>> 958eeb3 (updated nav bar)
+=======
+>>>>>>> 85c16b2 (update temps)
