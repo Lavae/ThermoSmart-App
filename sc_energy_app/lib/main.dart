@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 
 void main() => runApp(MyApp());
 
-/// This Widget is the main application widget.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,6 +48,8 @@ class Record {
   int Hr23;
   int Hr24;
   DocumentReference reference;
+  double avg;
+  int curr;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['day'] != null),
@@ -105,9 +106,42 @@ class Record {
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
+  double calcAvg() {
+    avg = (Hr1 +
+            Hr2 +
+            Hr3 +
+            Hr4 +
+            Hr5 +
+            Hr6 +
+            Hr7 +
+            Hr8 +
+            Hr9 +
+            Hr10 +
+            Hr11 +
+            Hr12 +
+            Hr13 +
+            Hr14 +
+            Hr15 +
+            Hr16 +
+            Hr17 +
+            Hr18 +
+            Hr19 +
+            Hr20 +
+            Hr21 +
+            Hr22 +
+            Hr23 +
+            Hr24) /
+        24;
+    return avg;
+  }
+
+  int getCurr() {
+    curr = Hr10;
+    return curr;
+  }
+
   @override
-  String toString() =>
-      "Record<$day:$Hr1:$Hr2:$Hr3:$Hr4:$Hr5:$Hr6:$Hr7:$Hr8:$Hr9:$Hr10:$Hr11:$Hr12:$Hr13:$Hr14:$Hr15:$Hr16:$Hr17:$Hr18:$Hr19:$Hr20:$Hr21:$Hr22:$Hr23:$Hr24>";
+  String toString() => "Record<$day:$avg:$curr>";
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -151,58 +185,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: DataTable(
           columns: [
             DataColumn(label: Text('Day')),
-            DataColumn(label: Text('Hour1')),
-            DataColumn(label: Text('Hour2')),
-            DataColumn(label: Text('Hour3')),
-            DataColumn(label: Text('Hour4')),
-            DataColumn(label: Text('Hour5')),
-            DataColumn(label: Text('Hour6')),
-            DataColumn(label: Text('Hour7')),
-            DataColumn(label: Text('Hour8')),
-            DataColumn(label: Text('Hour9')),
-            DataColumn(label: Text('Hour10')),
-            DataColumn(label: Text('Hour11')),
-            DataColumn(label: Text('Hour12')),
-            DataColumn(label: Text('Hour13')),
-            DataColumn(label: Text('Hour14')),
-            DataColumn(label: Text('Hour15')),
-            DataColumn(label: Text('Hour16')),
-            DataColumn(label: Text('Hour17')),
-            DataColumn(label: Text('Hour18')),
-            DataColumn(label: Text('Hour19')),
-            DataColumn(label: Text('Hour20')),
-            DataColumn(label: Text('Hour21')),
-            DataColumn(label: Text('Hour22')),
-            DataColumn(label: Text('Hour23')),
-            DataColumn(label: Text('Hour24')),
+            DataColumn(label: Text('Average')),
+            DataColumn(label: Text('Current')),
           ],
           rows: [
             DataRow(cells: [
               DataCell(Text(record.day)),
-              DataCell(Text(record.Hr1.toString())),
-              DataCell(Text(record.Hr2.toString())),
-              DataCell(Text(record.Hr3.toString())),
-              DataCell(Text(record.Hr4.toString())),
-              DataCell(Text(record.Hr5.toString())),
-              DataCell(Text(record.Hr6.toString())),
-              DataCell(Text(record.Hr7.toString())),
-              DataCell(Text(record.Hr8.toString())),
-              DataCell(Text(record.Hr9.toString())),
-              DataCell(Text(record.Hr10.toString())),
-              DataCell(Text(record.Hr11.toString())),
-              DataCell(Text(record.Hr12.toString())),
-              DataCell(Text(record.Hr13.toString())),
-              DataCell(Text(record.Hr14.toString())),
-              DataCell(Text(record.Hr15.toString())),
-              DataCell(Text(record.Hr16.toString())),
-              DataCell(Text(record.Hr17.toString())),
-              DataCell(Text(record.Hr18.toString())),
-              DataCell(Text(record.Hr19.toString())),
-              DataCell(Text(record.Hr20.toString())),
-              DataCell(Text(record.Hr21.toString())),
-              DataCell(Text(record.Hr22.toString())),
-              DataCell(Text(record.Hr23.toString())),
-              DataCell(Text(record.Hr24.toString())),
+              DataCell(Text(record.calcAvg().toStringAsFixed(1))),
+              DataCell(Text(record.getCurr().toString())),
             ])
           ],
         ),
