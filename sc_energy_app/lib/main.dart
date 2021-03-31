@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:custom_switch/custom_switch.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
+
 
 void main(){
   runApp(MyApp());
@@ -16,59 +20,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-//Temp route stuff
-
-class FirstRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('First Route'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          child: Text('Open route'),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SecondRoute()),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
-
-class SecondRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Second Route"),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => FirstRoute()),
-            );
-          },
-          child: Text('Go back!'),
-        ),
-      ),
-    );
-  }
-}
-
-//Nav Bar
-
-class MyNavigationBarRoutes {
-  static const String root = '/';
-  static const String detail = '/detail';
-}
+//Nav bar
 
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar({Key key}) : super(key: key);
@@ -79,36 +31,15 @@ class MyNavigationBar extends StatefulWidget {
 
 class _MyNavigationBarState extends State<MyNavigationBar> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    Text('Temperature',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    Text('Control',
-        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+  static List<Widget> _widgetOptions = <Widget>[
+    Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)), //HomePage()
+    DataPage(),
+    ButtonPage(),
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    if (index == 1){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MyHomePage()),
-      );
-    }
-    else if (index == 2){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => FirstRoute()),
-      );
-    }
-    else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SecondRoute()),
-      );
-    }
   }
 
   @override
@@ -131,7 +62,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                 backgroundColor: Colors.yellow),
             BottomNavigationBarItem(
               icon: Icon(Icons.toggle_on),
-              title: Text('Control'),
+              title: Text('Vent Control'),
               backgroundColor: Colors.blue,
             ),
           ],
@@ -145,13 +76,61 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   }
 }
 
+//Button page
+
+class ButtonPage extends StatefulWidget {
+  @override
+  _ButtonPageState createState() => _ButtonPageState();
+}
+
+class _ButtonPageState extends State<ButtonPage> {
+
+  bool status = false;
+  String open = "";
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      /*appBar: AppBar(
+        title: Text('Custom Switch Example'),
+      ),*/
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CustomSwitch(
+              activeColor: Colors.blue,
+              value: status,
+              onChanged: (value) {
+                print("Vent Status: $value");
+                setState(() {
+                  status = value;
+                  if (status){
+                    open = "Open";
+                  }
+                  else {
+                    open = "Closed";
+                  }
+                });
+              },
+            ),
+            SizedBox(height: 12.0,),
+            Text('Vent $open', style: TextStyle(
+              color: Colors.black,
+              fontSize: 20.0
+            ),)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 //Data stuff
 
-
-class MyHomePage extends StatefulWidget {
+class DataPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() {
-    return _MyHomePageState();
+  _DataPageState createState() {
+    return _DataPageState();
   }
 }
 
@@ -278,11 +257,11 @@ class Record {
   String toString() => "Record<$day:$avg:$curr>";
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _DataPageState extends State<DataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Hourly Temps')),
+      //appBar: AppBar(title: Text('Hourly Temps')),
       body: _buildBody(context),
     );
   }
@@ -335,6 +314,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 /*
 class MyNavigationBar extends StatefulWidget {
@@ -408,3 +388,8 @@ class Button extends StatelessWidget {
 >>>>>>> faa7f7c (built datatable)
 =======
 >>>>>>> 9234ed1 (Nathan's commit 3/31)
+=======
+/*
+
+*/
+>>>>>>> 958eeb3 (updated nav bar)
