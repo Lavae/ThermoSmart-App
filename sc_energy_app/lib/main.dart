@@ -9,12 +9,209 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "navbar",
-      home: MyNavigationBar(),
+      title: "data table",
+      home: MyHomePage(),
     );
   }
 }
 
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() {
+    return _MyHomePageState();
+  }
+}
+
+class Record {
+  String day;
+  int Hr1;
+  int Hr2;
+  int Hr3;
+  int Hr4;
+  int Hr5;
+  int Hr6;
+  int Hr7;
+  int Hr8;
+  int Hr9;
+  int Hr10;
+  int Hr11;
+  int Hr12;
+  int Hr13;
+  int Hr14;
+  int Hr15;
+  int Hr16;
+  int Hr17;
+  int Hr18;
+  int Hr19;
+  int Hr20;
+  int Hr21;
+  int Hr22;
+  int Hr23;
+  int Hr24;
+  DocumentReference reference;
+
+  Record.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['day'] != null),
+        assert(map['Hr1'] != null),
+        assert(map['Hr2'] != null),
+        assert(map['Hr3'] != null),
+        assert(map['Hr4'] != null),
+        assert(map['Hr5'] != null),
+        assert(map['Hr6'] != null),
+        assert(map['Hr7'] != null),
+        assert(map['Hr8'] != null),
+        assert(map['Hr9'] != null),
+        assert(map['Hr10'] != null),
+        assert(map['Hr11'] != null),
+        assert(map['Hr12'] != null),
+        assert(map['Hr13'] != null),
+        assert(map['Hr14'] != null),
+        assert(map['Hr15'] != null),
+        assert(map['Hr16'] != null),
+        assert(map['Hr17'] != null),
+        assert(map['Hr18'] != null),
+        assert(map['Hr19'] != null),
+        assert(map['Hr20'] != null),
+        assert(map['Hr21'] != null),
+        assert(map['Hr22'] != null),
+        assert(map['Hr23'] != null),
+        assert(map['Hr24'] != null),
+        day = map['day'],
+        Hr1 = map['Hr1'],
+        Hr2 = map['Hr2'],
+        Hr3 = map['Hr3'],
+        Hr4 = map['Hr4'],
+        Hr5 = map['Hr5'],
+        Hr6 = map['Hr6'],
+        Hr7 = map['Hr7'],
+        Hr8 = map['Hr8'],
+        Hr9 = map['Hr9'],
+        Hr10 = map['Hr10'],
+        Hr11 = map['Hr11'],
+        Hr12 = map['Hr12'],
+        Hr13 = map['Hr13'],
+        Hr14 = map['Hr14'],
+        Hr15 = map['Hr15'],
+        Hr16 = map['Hr16'],
+        Hr17 = map['Hr17'],
+        Hr18 = map['Hr18'],
+        Hr19 = map['Hr19'],
+        Hr20 = map['Hr20'],
+        Hr21 = map['Hr21'],
+        Hr22 = map['Hr22'],
+        Hr23 = map['Hr23'],
+        Hr24 = map['Hr24'];
+
+  Record.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  @override
+  String toString() =>
+      "Record<$day:$Hr1:$Hr2:$Hr3:$Hr4:$Hr5:$Hr6:$Hr7:$Hr8:$Hr9:$Hr10:$Hr11:$Hr12:$Hr13:$Hr14:$Hr15:$Hr16:$Hr17:$Hr18:$Hr19:$Hr20:$Hr21:$Hr22:$Hr23:$Hr24>";
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Hourly Temps')),
+      body: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('Week data').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+
+        return _buildList(context, snapshot.data.documents);
+      },
+    );
+  }
+
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return ListView(
+      padding: const EdgeInsets.only(top: 20.0),
+      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+    final record = Record.fromSnapshot(data);
+
+    return Padding(
+      key: ValueKey(record.day),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        child: DataTable(
+          columns: [
+            DataColumn(label: Text('Day')),
+            DataColumn(label: Text('Hour1')),
+            DataColumn(label: Text('Hour2')),
+            DataColumn(label: Text('Hour3')),
+            DataColumn(label: Text('Hour4')),
+            DataColumn(label: Text('Hour5')),
+            DataColumn(label: Text('Hour6')),
+            DataColumn(label: Text('Hour7')),
+            DataColumn(label: Text('Hour8')),
+            DataColumn(label: Text('Hour9')),
+            DataColumn(label: Text('Hour10')),
+            DataColumn(label: Text('Hour11')),
+            DataColumn(label: Text('Hour12')),
+            DataColumn(label: Text('Hour13')),
+            DataColumn(label: Text('Hour14')),
+            DataColumn(label: Text('Hour15')),
+            DataColumn(label: Text('Hour16')),
+            DataColumn(label: Text('Hour17')),
+            DataColumn(label: Text('Hour18')),
+            DataColumn(label: Text('Hour19')),
+            DataColumn(label: Text('Hour20')),
+            DataColumn(label: Text('Hour21')),
+            DataColumn(label: Text('Hour22')),
+            DataColumn(label: Text('Hour23')),
+            DataColumn(label: Text('Hour24')),
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(Text(record.day)),
+              DataCell(Text(record.Hr1.toString())),
+              DataCell(Text(record.Hr2.toString())),
+              DataCell(Text(record.Hr3.toString())),
+              DataCell(Text(record.Hr4.toString())),
+              DataCell(Text(record.Hr5.toString())),
+              DataCell(Text(record.Hr6.toString())),
+              DataCell(Text(record.Hr7.toString())),
+              DataCell(Text(record.Hr8.toString())),
+              DataCell(Text(record.Hr9.toString())),
+              DataCell(Text(record.Hr10.toString())),
+              DataCell(Text(record.Hr11.toString())),
+              DataCell(Text(record.Hr12.toString())),
+              DataCell(Text(record.Hr13.toString())),
+              DataCell(Text(record.Hr14.toString())),
+              DataCell(Text(record.Hr15.toString())),
+              DataCell(Text(record.Hr16.toString())),
+              DataCell(Text(record.Hr17.toString())),
+              DataCell(Text(record.Hr18.toString())),
+              DataCell(Text(record.Hr19.toString())),
+              DataCell(Text(record.Hr20.toString())),
+              DataCell(Text(record.Hr21.toString())),
+              DataCell(Text(record.Hr22.toString())),
+              DataCell(Text(record.Hr23.toString())),
+              DataCell(Text(record.Hr24.toString())),
+            ])
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/*
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar({Key key}) : super(key: key);
 
@@ -57,7 +254,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                 title: Text('Temperature'),
                 backgroundColor: Colors.yellow),
             BottomNavigationBarItem(
-              icon: Icon(Icons.toggle_off_sharp),
+              icon: Icon(Icons.toggle),
               title: Text('Control'),
               backgroundColor: Colors.blue,
             ),
@@ -71,6 +268,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
     );
   }
 }
+<<<<<<< HEAD
 
 class Button extends StatelessWidget {
   @override
@@ -80,3 +278,6 @@ class Button extends StatelessWidget {
     );
   }
 }
+=======
+*/
+>>>>>>> faa7f7c (built datatable)
