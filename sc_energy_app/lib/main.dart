@@ -26,9 +26,9 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    Text('Kitchen',
+    Text('Temperature',
         style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-    Text('Bedroom',
+    Text('Control',
         style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
   ];
 
@@ -53,12 +53,12 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                 title: Text('Home'),
                 backgroundColor: Colors.green),
             BottomNavigationBarItem(
-                icon: Icon(Icons.kitchen),
-                title: Text('Kitchen'),
+                icon: Icon(Icons.thermostat_sharp),
+                title: Text('Temperature'),
                 backgroundColor: Colors.yellow),
             BottomNavigationBarItem(
-              icon: Icon(Icons.king_bed),
-              title: Text('Bedroom'),
+              icon: Icon(Icons.toggle_off_sharp),
+              title: Text('Control'),
               backgroundColor: Colors.blue,
             ),
           ],
