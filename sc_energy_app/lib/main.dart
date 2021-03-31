@@ -71,3 +71,12 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
     );
   }
 }
+
+class Button extends StatelessWidget {
+  @override
+  Widget build(BuildContext ctxt) {
+    return new MaterialApp(
+      home: new MyApp(),
+    );
+  }
+}
