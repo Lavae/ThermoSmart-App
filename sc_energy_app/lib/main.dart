@@ -2,17 +2,133 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "data table",
-      home: MyHomePage(),
+      title: "Energy Saver",
+      home: MyNavigationBar(), //FirstRoute(), //MyHomePage(),
     );
   }
 }
+
+
+//Temp route stuff
+
+class FirstRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Route'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          child: Text('Open route'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SecondRoute()),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class SecondRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second Route"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FirstRoute()),
+            );
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
+//Nav Bar
+
+class MyNavigationBarRoutes {
+  static const String root = '/';
+  static const String detail = '/detail';
+}
+
+class MyNavigationBar extends StatefulWidget {
+  MyNavigationBar({Key key}) : super(key: key);
+  
+  @override
+  _MyNavigationBarState createState() => _MyNavigationBarState();
+}
+
+class _MyNavigationBarState extends State<MyNavigationBar> {
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text('Home', style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Text('Temperature',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+    Text('Control',
+        style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar:
+          AppBar(title: const Text('energy app'), backgroundColor: Colors.blue),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                title: Text('Home'),
+                backgroundColor: Colors.green),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.thermostat_sharp),
+                title: Text('Temperature'),
+                backgroundColor: Colors.yellow),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.toggle_on),
+              title: Text('Control'),
+              backgroundColor: Colors.blue,
+            ),
+          ],
+          type: BottomNavigationBarType.shifting,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.black,
+          iconSize: 40,
+          onTap: _onItemTapped,
+          elevation: 5),
+    );
+  }
+}
+
+//Data stuff
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -201,6 +317,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+<<<<<<< HEAD
 /*
 class MyNavigationBar extends StatefulWidget {
   MyNavigationBar({Key key}) : super(key: key);
@@ -271,3 +388,5 @@ class Button extends StatelessWidget {
 =======
 */
 >>>>>>> faa7f7c (built datatable)
+=======
+>>>>>>> 9234ed1 (Nathan's commit 3/31)
