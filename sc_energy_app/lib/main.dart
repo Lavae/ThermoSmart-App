@@ -2,11 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:custom_switch/custom_switch.dart';
+import 'package:flutter/services.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:ssh/ssh.dart';
 
-void main() {
+var client = new SSHClient(
+    host: "192.168.254.21",
+    port: 22,
+    username: "flutter_app",
+    passwordOrKey: "Cleartext1",
+  );
+
+//ssh
+//
+Future<void> main() {
   runApp(MyApp());
 }
+
+Future<void> pi_open() async{
+  final pi = new SSHClient(host: "192.168.254.21", port: 22, username: "pi", passwordOrKey: "Cleartext1");
+  //String result;
+  await pi.connect();
+  await pi.execute("python open.py");
+  await pi.disconnect();
+}
+
+Future<void> pi_close() async{
+  final pi = new SSHClient(host: "192.168.254.21", port: 22, username: "pi", passwordOrKey: "Cleartext1");
+  await pi.connect();
+  await pi.execute("python close.py");
+  await pi.disconnect();
+}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,6 +41,57 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Energy Saver",
       home: MyNavigationBar(), //FirstRoute(), //MyHomePage(),
+    );
+  }
+}
+
+//Button page
+
+class ButtonPage extends StatefulWidget {
+  @override
+  _ButtonPageState createState() => _ButtonPageState();
+}
+
+class _ButtonPageState extends State<ButtonPage> {
+  bool status = false;
+  String open = "";
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      /*appBar: AppBar(
+        title: Text('Custom Switch Example'),
+      ),*/
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CustomSwitch(
+              activeColor: Colors.blue,
+              value: status,
+              onChanged: (value) {
+                print("Vent Status: $value");
+                setState(() {
+                  status = value;
+                  if (status) {
+                    open = "Open";
+                    pi_open();
+                  } else {
+                    pi_close();
+                    open = "Closed";
+                  }
+                });
+              },
+            ),
+            SizedBox(
+              height: 12.0,
+            ),
+            Text(
+              'Vent $open',
+              style: TextStyle(color: Colors.black, fontSize: 20.0),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -72,55 +150,6 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           iconSize: 40,
           onTap: _onItemTapped,
           elevation: 5),
-    );
-  }
-}
-//
-//Button page
-
-class ButtonPage extends StatefulWidget {
-  @override
-  _ButtonPageState createState() => _ButtonPageState();
-}
-
-class _ButtonPageState extends State<ButtonPage> {
-  bool status = false;
-  String open = "";
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      /*appBar: AppBar(
-        title: Text('Custom Switch Example'),
-      ),*/
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CustomSwitch(
-              activeColor: Colors.blue,
-              value: status,
-              onChanged: (value) {
-                print("Vent Status: $value");
-                setState(() {
-                  status = value;
-                  if (status) {
-                    open = "Open";
-                  } else {
-                    open = "Closed";
-                  }
-                });
-              },
-            ),
-            SizedBox(
-              height: 12.0,
-            ),
-            Text(
-              'Vent $open',
-              style: TextStyle(color: Colors.black, fontSize: 20.0),
-            )
-          ],
-        ),
-      ),
     );
   }
 }
