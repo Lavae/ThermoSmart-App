@@ -108,9 +108,7 @@ class MyNavigationBar extends StatefulWidget {
 class _MyNavigationBarState extends State<MyNavigationBar> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    Text('Home',
-        style:
-            TextStyle(fontSize: 35, fontWeight: FontWeight.bold)), //HomePage()
+    HomePage(),
     DataPage(),
     ButtonPage(),
   ];
@@ -154,6 +152,69 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   }
 }
 
+//Home statuses
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('Dayta').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+
+        return _buildList(context, snapshot.data.documents);
+      },
+    );
+  }
+
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    return ListView(
+      padding: const EdgeInsets.only(top: 20.0),
+      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+    );
+  }
+
+  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+    final current = Current.fromSnapshot(data);
+
+    return Padding(
+      key: ValueKey(current.status),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        child: DataTable(
+          columns: [
+            DataColumn(label: Text('Status')),
+            DataColumn(label: Text('Temperature')),
+            DataColumn(label: Text('Cost')),
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(Text(current.status)),
+              DataCell(Text(current.getTemp().toString() + "F")),
+              DataCell(Text("\$" + current.getCost().toString() + "/hr")),
+            ])
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
 //Data stuff
 
 class DataPage extends StatefulWidget {
@@ -161,6 +222,37 @@ class DataPage extends StatefulWidget {
   _DataPageState createState() {
     return _DataPageState();
   }
+}
+
+class Current {
+  String status;
+  int temp;
+  int hours;
+  double cost;
+
+  DocumentReference reference;
+
+  Current.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['status'] != null),
+        assert(map['temp'] != null),
+        assert(map['hours'] != null),
+        hours = map['hours'],
+        temp = map['temp'],
+        status = map['status'];
+
+  Current.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
+
+  int getTemp() {
+    return temp;
+  }
+
+  double getCost() {
+    cost = .75 * hours;
+    return cost;
+  }
+
+  String toString() => "Current<$status:$temp:$cost>";
 }
 
 class Record {
@@ -190,6 +282,7 @@ class Record {
   int Hr23;
   int Hr24;
   DocumentReference reference;
+
   int avg1;
   int avg2;
 
