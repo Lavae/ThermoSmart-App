@@ -161,8 +161,8 @@ class Record {
   int Hr23;
   int Hr24;
   DocumentReference reference;
-  double avg1;
-  double avg2;
+  int avg1;
+  int avg2;
 
   Record.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['day'] != null),
@@ -219,13 +219,13 @@ class Record {
   Record.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
-  double calcAvgLow() {
-    avg1 = (Hr1 + Hr2 + Hr3 + Hr4) / 4;
+  int calcAvgLow() {
+    avg1 = Hr1;
     return avg1;
   }
 
-  double calcAvgHi() {
-    avg2 = (Hr12 + Hr13 + Hr14 + Hr15) / 4;
+  int calcAvgHi() {
+    avg2 = Hr12;
     return avg2;
   }
 
@@ -274,14 +274,14 @@ class _DataPageState extends State<DataPage> {
         child: DataTable(
           columns: [
             DataColumn(label: Text('Day')),
-            DataColumn(label: Text('Avg Low')),
-            DataColumn(label: Text('Avg High')),
+            DataColumn(label: Text('Low')),
+            DataColumn(label: Text('High')),
           ],
           rows: [
             DataRow(cells: [
               DataCell(Text(record.day)),
-              DataCell(Text(record.calcAvgLow().toStringAsFixed(1))),
-              DataCell(Text(record.calcAvgHi().toStringAsFixed(1))),
+              DataCell(Text(record.calcAvgLow().toString())),
+              DataCell(Text(record.calcAvgHi().toString())),
             ])
           ],
         ),
