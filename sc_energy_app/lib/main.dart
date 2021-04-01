@@ -5,13 +5,14 @@ import 'package:custom_switch/custom_switch.dart';
 import 'package:flutter/services.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:ssh/ssh.dart';
+
 //Push?
 var client = new SSHClient(
-    host: "192.168.254.21",
-    port: 22,
-    username: "flutter_app",
-    passwordOrKey: "Cleartext1",
-  );
+  host: "192.168.254.21",
+  port: 22,
+  username: "flutter_app",
+  passwordOrKey: "Cleartext1",
+);
 
 //ssh
 //
@@ -19,21 +20,28 @@ Future<void> main() {
   runApp(MyApp());
 }
 
-Future<void> pi_open() async{
-  final pi = new SSHClient(host: "192.168.254.21", port: 22, username: "pi", passwordOrKey: "Cleartext1");
+Future<void> pi_open() async {
+  final pi = new SSHClient(
+      host: "192.168.254.21",
+      port: 22,
+      username: "pi",
+      passwordOrKey: "Cleartext1");
   //String result;
   await pi.connect();
   await pi.execute("python open.py");
   await pi.disconnect();
 }
 
-Future<void> pi_close() async{
-  final pi = new SSHClient(host: "192.168.254.21", port: 22, username: "pi", passwordOrKey: "Cleartext1");
+Future<void> pi_close() async {
+  final pi = new SSHClient(
+      host: "192.168.254.21",
+      port: 22,
+      username: "pi",
+      passwordOrKey: "Cleartext1");
   await pi.connect();
   await pi.execute("python close.py");
   await pi.disconnect();
 }
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -205,7 +213,7 @@ class _HomePageState extends State<HomePage> {
             DataRow(cells: [
               DataCell(Text(current.status)),
               DataCell(Text(current.getTemp().toString() + "F")),
-              DataCell(Text("\$" + current.getCost().toString() + "/hr")),
+              DataCell(Text("\$" + current.getCost().toString() + "/day")),
             ])
           ],
         ),
@@ -213,7 +221,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
 
 //Data stuff
 
