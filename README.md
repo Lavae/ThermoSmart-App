@@ -1,4 +1,4 @@
-# SC-Energy-App
+# ThermoSmart Energy App + Vent
 
 1. Clone this repository onto your desktop.
 2. Everything is executable in the main.dart file. 
